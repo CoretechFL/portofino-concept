@@ -240,6 +240,54 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media(min-width:960px){.toast{bottom:28px}}
 
+/* dish dialog, upsell, checkout */
+.dlg{position:fixed;z-index:82;left:0;right:0;bottom:0;max-height:92vh;display:flex;flex-direction:column;background:var(--card);color:var(--ink);border-radius:18px 18px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.3)}
+@media(min-width:700px){.dlg{left:50%;top:50%;bottom:auto;transform:translate(-50%,-50%);width:min(540px,calc(100% - 32px));max-height:88vh;border-radius:18px}}
+.dlg .close{position:absolute;top:12px;right:max(14px,env(safe-area-inset-right,0px));width:34px;height:34px;border-radius:50%;border:0;background:var(--chip);color:var(--ink);font-size:1.2rem;cursor:pointer;z-index:2}
+.dlg-body{overflow:auto;padding:22px max(18px,env(safe-area-inset-right,0px)) 18px max(18px,env(safe-area-inset-left,0px));flex:1;min-height:0}
+.dlg-foot{display:flex;gap:10px;align-items:center;border-top:1px solid var(--line);padding:12px max(18px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+.dlg-foot .btn{flex:1;padding:13px 14px}
+.dlg h3{font-family:var(--display);font-size:1.4rem;color:var(--heading);padding-right:42px;margin-bottom:6px}
+.dlg .lead{color:var(--muted);font-size:.94rem;margin-bottom:6px}
+.og{margin-top:20px}
+.og-h{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;margin-bottom:9px}
+.req{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:999px;background:var(--soft);color:var(--brand)}
+.req.ok{background:var(--open-bg);color:var(--open-fg)}
+.opt-l{font-size:.75rem;font-weight:700;color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+label.pill{display:inline-block;position:relative;font-size:inherit}
+.pill input{position:absolute;opacity:0;width:1px;height:1px}
+.pill span{display:inline-block;padding:8px 14px;border:1.5px solid var(--line);border-radius:999px;font-weight:700;font-size:.9rem;cursor:pointer;background:var(--card)}
+.pill input:checked+span{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.pill input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+details.addg{border:1.5px solid var(--line);border-radius:12px;padding:0 14px;margin-top:8px}
+details.addg:first-of-type{border-top:1.5px solid var(--line)}
+details.addg summary{padding:12px 0;font-weight:700}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:.92rem}
+.arow .ap{color:var(--muted);font-size:.85rem;white-space:nowrap}
+.note{margin-top:18px}
+.note textarea{min-height:64px}
+.qty.big{gap:10px}
+.qty.big button{width:36px;height:36px;font-size:1.15rem}
+.cline .opt{display:block;font-weight:500;font-size:.8rem;color:var(--muted);margin-top:2px}
+.ups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.ups button{display:grid;gap:3px;text-align:left;border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.ups button:hover{border-color:var(--brand)}
+.ups button.on{border-color:var(--open-fg);background:var(--open-bg)}
+.ups b{font-size:.92rem}
+.ups .pr{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.ups .ua{color:var(--brand);font-weight:800;font-size:.82rem}
+.ups button.on .ua{color:var(--open-fg)}
+.co fieldset{border:0;margin-top:16px;display:grid;gap:10px;min-width:0}
+.co legend{font-weight:800;margin-bottom:8px}
+.co .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tips{display:flex;flex-wrap:wrap;gap:8px}
+.tips button{border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:700;padding:8px 16px;border-radius:999px;cursor:pointer}
+.tips button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+#coSum{margin-top:16px}
+.hint.warn{color:var(--closed-fg);margin-top:6px}
+.dlg .sumbox{background:var(--chip);border-radius:12px;padding:10px 14px;margin-top:12px}
+
 /* business view */
 .biz-hero{background:
   radial-gradient(circle at 85% 20%,rgba(255,206,120,.35),transparent 45%),
@@ -715,14 +763,10 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
   <button class="close" type="button" data-close aria-label="Sluiten">×</button>
   <div id="cartSheet"></div>
 </div>
-<div class="modal" id="checkout" role="dialog" aria-modal="true" aria-labelledby="coTitle" hidden>
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgTitle" hidden>
   <button class="close" type="button" data-close aria-label="Sluiten">×</button>
-  <h3 id="coTitle">Bijna klaar</h3>
-  <div class="sumbox" id="coSum"></div>
-  <p>Dit is een conceptontwerp. Op de echte website vul je hier je gegevens in, kies je een tijd en reken je af.</p>
-  <p>Wil je nu echt bestellen? Dat kan via het huidige bestelsysteem van Portofino.</p>
-  <a class="btn btn-primary btn-block" href="https://www.portofino-bestellen.nl/online-ordering" target="_blank" rel="noopener">Naar het huidige bestelsysteem</a>
-  <button class="btn btn-outline btn-block" type="button" data-close>Terug naar mijn bestelling</button>
+  <div class="dlg-body" id="dlgBody"></div>
+  <div class="dlg-foot" id="dlgFoot"></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -984,17 +1028,16 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
 
   var RATE={bezorgen:0.9,afhalen:0.85};
   var ITEMS={},ORDER=[];
-  CATS.forEach(function(c){c.items.forEach(function(it,i){var id=c.id+'-'+i;ITEMS[id]={id:id,name:it[0],desc:it[1]||'',cents:Math.round(it[2]*100),tag:it[3]||'',nd:!!c.nd};ORDER.push(id)})});
+  CATS.forEach(function(c){c.items.forEach(function(it,i){var id=c.id+'-'+i;ITEMS[id]={id:id,name:it[0],desc:it[1]||'',cents:Math.round(it[2]*100),tag:it[3]||'',nd:!!c.nd,cat:c.id};ORDER.push(id)})});
 
+  function $(s){return document.querySelector(s)}
   function esc(s){return String(s).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]})}
   function euro(c){return '€ '+(c/100).toFixed(2).replace('.',',')}
   function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
   function load(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+  function byName(n){for(var i=0;i<ORDER.length;i++){if(ITEMS[ORDER[i]].name===n)return ORDER[i]}return null}
 
   var mode=load('pf-mode','bezorgen');if(!RATE[mode])mode='bezorgen';
-  var cart=load('pf-cart',{});
-  Object.keys(cart).forEach(function(k){if(!ITEMS[k]||!(cart[k]>0))delete cart[k]});
-
   function unit(it){return it.nd?it.cents:Math.round(it.cents*RATE[mode])}
   function priceHTML(it){
     if(it.cents===0)return '<div class="price">Gratis</div>';
@@ -1003,10 +1046,46 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
   }
   function tagHTML(t){if(!t)return '';return '<span class="tag'+(t==='Vegetarisch'?'':' hot')+'">'+esc(t)+'</span>'}
 
+  /* ---------- options per dish ---------- */
+  var SAUCE_IDS=['Knoflooksaus','Samoeraisaus','Curry','Ketchup','Chilisaus','Chilisaus Hot','Chili Hot','Uiensaus','BBQ-saus','Franse Mosterd','Pesto','Satésaus'].map(byName).filter(Boolean);
+  var SIDE_IDS=['Patat','Uiensalade','Cacik','Extra Pitta','Parmezaanse Kaas'].map(byName).filter(Boolean);
+  var DRINK_IDS=ORDER.filter(function(id){return ITEMS[id].cat==='drinken'});
+  var DR3=['Coca-Cola','Fanta','7Up'],SAUS=['Knoflooksaus','Samoeraisaus','Curry','Ketchup','Chilisaus','BBQ-saus','Mayo'],KS=['Knoflooksaus','Sambal'],VLEES=['Kipdöner','Kalfsdöner','Hete kip','Shoarma'],CAPRI=['Multivitamine','Sinas','Kers'];
+  function G(id,label,values){return {id:id,label:label,values:values}}
+  function groupsFor(it){
+    var c=it.cat,n=it.name.toLowerCase(),d=it.desc.toLowerCase(),g=[];
+    if(c==='actiemenu'){g.push(G('pr','Patat of rijst',['Patat','Rijst']),G('saus','Saus',SAUS),G('drink','Drankje',DR3))}
+    if(c==='acties'){g.push(G('drink','Drankje',['Coca-Cola','Coca-Cola Zero','Fanta','7Up','Sprite','Ice Tea Peach']))}
+    if(c==='grill'){
+      if(n.indexOf('gemüse')>-1||n.indexOf('tagen')>-1)g.push(G('vlees','Vlees',VLEES));
+      if(n.indexOf('spareribs')>-1)g.push(G('smaak','Smaak',['Zoet','Medium','Hot']));
+      if(!/hamburger|kipburger/.test(n))g.push(G('pr','Patat of rijst',['Patat','Rijst']));
+      g.push(n.indexOf('gemüse')>-1?G('saus','Saus',KS):G('saus','Saus',SAUS));
+    }
+    if(c==='mixgrill'){g.push(G('pr','Patat of rijst',['Patat','Rijst']),G('s1','Saus 1',SAUS),G('s2','Saus 2',SAUS))}
+    if(c==='kapsalon'){
+      if(n.indexOf('gemüse')>-1)g.push(G('vlees','Vlees',VLEES));
+      if(n.indexOf('tagen')>-1)g.push(G('vlees','Vlees',['Döner','Shoarma']));
+      if(/gemüse|tagen/.test(n))g.push(G('saus','Saus',KS));
+    }
+    if(c==='broodjes'||c==='wraps'){
+      if(n.indexOf('gemüse')>-1)g.push(G('vlees','Vlees',VLEES));
+      if(d.indexOf('knoflooksaus of sambal')>-1)g.push(G('saus','Saus',KS));
+      else if(d.indexOf('mayo of ketchup')>-1)g.push(G('saus','Saus',['Mayo','Ketchup']));
+    }
+    if(c==='kindermenu'){g.push(G('saus','Sausje',['Mayo','Ketchup','Curry']),G('capri','Capri-Sun',CAPRI))}
+    if(c==='kinderpizza'){g.push(G('capri','Capri-Sun',CAPRI))}
+    if(c==='snacks'){
+      if(d.indexOf('sweet chili')>-1)g.push(G('saus','Saus',['Mayo','Ketchup','Sweet chili']));
+      else if(d.indexOf('mayo of ketchup')>-1)g.push(G('saus','Saus',['Mayo','Ketchup']));
+    }
+    return g;
+  }
+  function plain(it){return it.cat==='drinken'||it.cat==='extra'}
+
   /* ---------- render featured + menu ---------- */
-  function findId(cat,name){for(var i=0;i<ORDER.length;i++){var it=ITEMS[ORDER[i]];if(it.id.indexOf(cat+'-')===0&&it.name===name)return it.id}return null}
   var feat=document.getElementById('featured'),fh='';
-  FEATURED.forEach(function(f){var id=findId(f[0],f[1]);if(!id)return;var it=ITEMS[id];
+  FEATURED.forEach(function(f){var id=byName(f[1]);if(!id)return;var it=ITEMS[id];
     fh+='<div class="item" data-add="'+id+'"><div>'+(it.tag?tagHTML(it.tag)+'<br>':'')+'<h3><span class="qb" data-qb="'+id+'" hidden></span>'+esc(it.name)+'</h3><p>'+esc(it.desc)+'</p><span data-price="'+id+'">'+priceHTML(it)+'</span></div><div class="thumb" aria-hidden="true">'+f[2]+'<button class="add" type="button" tabindex="-1">+</button></div></div>';
   });
   feat.innerHTML=fh;
@@ -1021,7 +1100,6 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
     mh+='</div>';
   });
   list.innerHTML=mh;bar.innerHTML=bh;
-
   function refreshPrices(){document.querySelectorAll('[data-price]').forEach(function(el){el.innerHTML=priceHTML(ITEMS[el.getAttribute('data-price')])})}
 
   /* ---------- search ---------- */
@@ -1035,43 +1113,59 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
     noRes.hidden=any;
   });
 
-  /* ---------- cart ---------- */
-  function totals(){var sub=0,tot=0,n=0;Object.keys(cart).forEach(function(id){var it=ITEMS[id],q=cart[id];sub+=it.cents*q;tot+=unit(it)*q;n+=q});return {sub:sub,tot:tot,disc:sub-tot,n:n}}
+  /* ---------- cart (lines with choices and extras) ---------- */
+  var cart=load('pf-cart2',[]);
+  if(!Array.isArray(cart))cart=[];
+  cart=cart.filter(function(l){if(!l||!ITEMS[l.id]||!(l.q>0))return false;l.ch=l.ch||{};l.ad=l.ad||{};Object.keys(l.ad).forEach(function(a){if(!ITEMS[a]||!(l.ad[a]>0))delete l.ad[a]});l.nt=l.nt||'';return true});
+  function lineKey(l){return l.id+'|'+JSON.stringify(l.ch)+'|'+JSON.stringify(Object.keys(l.ad).sort().map(function(k){return [k,l.ad[k]]}))+'|'+l.nt}
+  cart.forEach(function(l){l.k=lineKey(l)});
+  function addLine(l){l.ch=l.ch||{};l.ad=l.ad||{};l.nt=l.nt||'';l.k=lineKey(l);var ex=null;cart.forEach(function(x){if(x.k===l.k)ex=x});if(ex)ex.q+=l.q;else cart.push(l);renderCart()}
+  function lUnit(l){var s=unit(ITEMS[l.id]);for(var a in l.ad)s+=unit(ITEMS[a])*l.ad[a];return s}
+  function lBase(l){var s=ITEMS[l.id].cents;for(var a in l.ad)s+=ITEMS[a].cents*l.ad[a];return s}
+  function lDesc(l){var p=[];for(var g in l.ch)p.push(l.ch[g]);for(var a in l.ad)p.push('+ '+(l.ad[a]>1?l.ad[a]+'× ':'')+ITEMS[a].name);if(l.nt)p.push('“'+l.nt+'”');return p.join(' · ')}
+  function totals(){var sub=0,tot=0,n=0;cart.forEach(function(l){sub+=lBase(l)*l.q;tot+=lUnit(l)*l.q;n+=l.q});return {sub:sub,tot:tot,disc:sub-tot,n:n}}
+  var MIN=1200;
   function cartHTML(){
     var t=totals(),h='<h3>Je bestelling'+(t.n?'<button type="button" data-clear>Leegmaken</button>':'')+'</h3>';
     h+='<div class="cmode" role="group" aria-label="Bezorgen of afhalen"><button type="button" data-mode="bezorgen" aria-pressed="'+(mode==='bezorgen')+'">Bezorgen<small>10% korting</small></button><button type="button" data-mode="afhalen" aria-pressed="'+(mode==='afhalen')+'">Afhalen<small>15% korting</small></button></div>';
     if(!t.n){h+='<p class="cempty">Je mandje is nog leeg. Tik op een gerecht in het menu om het toe te voegen.</p>';}
     else{
       h+='<div class="clist">';
-      ORDER.forEach(function(id){if(!cart[id])return;var it=ITEMS[id];
-        h+='<div class="cline"><div class="n">'+esc(it.name)+'</div><div class="lt">'+euro(unit(it)*cart[id])+'</div><div class="qty"><button type="button" data-dec="'+id+'" aria-label="Eén '+esc(it.name)+' minder">−</button><span>'+cart[id]+'</span><button type="button" data-inc="'+id+'" aria-label="Eén '+esc(it.name)+' meer">+</button></div></div>';
+      cart.forEach(function(l,i){var it=ITEMS[l.id],ds=lDesc(l);
+        h+='<div class="cline"><div class="n">'+esc(it.name)+(ds?'<small class="opt">'+esc(ds)+'</small>':'')+'</div><div class="lt">'+euro(lUnit(l)*l.q)+'</div><div class="qty"><button type="button" data-dec="'+i+'" aria-label="Eén '+esc(it.name)+' minder">−</button><span>'+l.q+'</span><button type="button" data-inc="'+i+'" aria-label="Eén '+esc(it.name)+' meer">+</button></div></div>';
       });
-      h+='</div><div class="sums"><div class="r"><span>Subtotaal</span><span>'+euro(t.sub)+'</span></div>';
-      if(t.disc>0)h+='<div class="r disc"><span>Korting via website ('+(mode==='afhalen'?'15':'10')+'%)</span><span>− '+euro(t.disc)+'</span></div>';
-      h+='<div class="r tot"><span>Totaal</span><span>'+euro(t.tot)+'</span></div></div>';
+      h+='</div>'+sumsHTML(t,0);
     }
-    var min=1200,pct=mode==='bezorgen'?Math.min(100,Math.round(t.tot/min*100)):100,msg;
-    if(mode==='bezorgen'){msg=t.tot>=min?'Je kunt laten bezorgen.':'Nog '+euro(min-t.tot)+' tot het minimum van € 12 voor bezorgen.'}
+    var pct=mode==='bezorgen'?Math.min(100,Math.round(t.tot/MIN*100)):100,msg;
+    if(mode==='bezorgen'){msg=t.tot>=MIN?'Je kunt laten bezorgen.':'Nog '+euro(MIN-t.tot)+' tot het minimum van € 12 voor bezorgen.'}
     else msg='Afhalen bij Alkmaarseweg 101 in Beverwijk.';
     h+='<div class="bar" aria-hidden="true"><span style="width:'+pct+'%"></span></div><p class="hint">'+msg+'</p>';
-    var ok=t.n>0&&(mode!=='bezorgen'||t.tot>=min);
-    h+='<button class="btn btn-primary btn-block" type="button" data-checkout'+(ok?'':' disabled')+'>'+(t.n?'Afrekenen · '+euro(t.tot):'Afrekenen')+'</button>';
+    h+='<button class="btn btn-primary btn-block" type="button" data-checkout'+(canOrder(t)?'':' disabled')+'>'+(t.n?'Afrekenen · '+euro(t.tot):'Afrekenen')+'</button>';
     h+='<a class="btn btn-outline btn-block" href="tel:+31251223556">Liever bellen? 0251 22 35 56</a>';
     return h;
+  }
+  function canOrder(t){return t.n>0&&(mode!=='bezorgen'||t.tot>=MIN)}
+  function sumsHTML(t,tip){
+    var h='<div class="sums"><div class="r"><span>Subtotaal</span><span>'+euro(t.sub)+'</span></div>';
+    if(t.disc>0)h+='<div class="r disc"><span>Korting via website ('+(mode==='afhalen'?'15':'10')+'%)</span><span>− '+euro(t.disc)+'</span></div>';
+    if(tip>0)h+='<div class="r"><span>Fooi voor de bezorger</span><span>'+euro(tip)+'</span></div>';
+    return h+'<div class="r tot"><span>Totaal</span><span>'+euro(t.tot+tip)+'</span></div></div>';
   }
   function renderCart(){
     var html=cartHTML();
     document.getElementById('cartSide').innerHTML=html;
     document.getElementById('cartSheet').innerHTML=html;
-    document.querySelectorAll('[data-qb]').forEach(function(el){var q=cart[el.getAttribute('data-qb')]||0;el.hidden=!q;el.textContent=q+'×'});
+    var cnt={};cart.forEach(function(l){cnt[l.id]=(cnt[l.id]||0)+l.q});
+    document.querySelectorAll('[data-qb]').forEach(function(el){var q=cnt[el.getAttribute('data-qb')]||0;el.hidden=!q;el.textContent=q+'×'});
     var t=totals();
     document.getElementById('mbarLabel').innerHTML=t.n?'<span class="cnt">'+t.n+'</span>Bekijk bestelling':'Bekijk het menu';
     document.getElementById('mbarSum').textContent=t.n?euro(t.tot):'min. € 12';
-    store('pf-cart',cart);
+    store('pf-cart2',cart.map(function(l){return {id:l.id,q:l.q,ch:l.ch,ad:l.ad,nt:l.nt}}));
+    if(step==='checkout')updateCheckout();
+    if(step==='upsell')renderUpsell();
   }
   var toastEl=document.getElementById('toast'),toastT;
   function toast(msg){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('show')},1600)}
-  function add(id){cart[id]=(cart[id]||0)+1;renderCart();toast(ITEMS[id].name+' toegevoegd')}
 
   /* ---------- order mode ---------- */
   var info={'bezorgen':'Minimaal bestelbedrag € 12. 10% korting als je via de website bestelt.','afhalen':'Haal je bestelling op bij Alkmaarseweg 101 in Beverwijk. 15% korting als je afhaalt.'};
@@ -1080,35 +1174,149 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
     document.querySelectorAll('.seg [data-mode]').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-mode')===m?'true':'false')});
     document.getElementById('segInfo').textContent=info[m];
     refreshPrices();renderCart();
+    if(step==='item')updateItem();
   }
 
-  /* ---------- sheet + checkout ---------- */
-  var scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet'),co=document.getElementById('checkout');
-  function openSheet(){toastEl.classList.remove('show');scrim.hidden=false;sheet.hidden=false;document.body.classList.add('lock')}
-  function closeAll(){scrim.hidden=true;sheet.hidden=true;co.hidden=true;document.body.classList.remove('lock')}
-  function openCheckout(){
-    var t=totals(),h='';
-    ORDER.forEach(function(id){if(cart[id])h+='<div class="r" style="display:flex;justify-content:space-between;gap:10px;font-size:.9rem;padding:3px 0"><span>'+cart[id]+'× '+esc(ITEMS[id].name)+'</span><span>'+euro(unit(ITEMS[id])*cart[id])+'</span></div>'});
-    h+='<div class="r" style="display:flex;justify-content:space-between;font-weight:800;border-top:1px solid var(--line);margin-top:6px;padding-top:8px"><span>Totaal ('+(mode==='afhalen'?'afhalen':'bezorgen')+')</span><span>'+euro(t.tot)+'</span></div>';
-    document.getElementById('coSum').innerHTML=h;
-    sheet.hidden=true;scrim.hidden=false;co.hidden=false;document.body.classList.add('lock');
+  /* ---------- overlays: sheet + dialog ---------- */
+  var scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet'),dlg=document.getElementById('dlg'),dlgBody=document.getElementById('dlgBody'),dlgFoot=document.getElementById('dlgFoot'),step=null;
+  function openSheet(){toastEl.classList.remove('show');step=null;dlg.hidden=true;scrim.hidden=false;sheet.hidden=false;document.body.classList.add('lock')}
+  function closeAll(){scrim.hidden=true;sheet.hidden=true;dlg.hidden=true;step=null;document.body.classList.remove('lock')}
+  function openDlg(name,body,foot){step=name;dlgBody.innerHTML=body;dlgFoot.innerHTML=foot||'';dlgFoot.hidden=!foot;sheet.hidden=true;scrim.hidden=false;dlg.hidden=false;document.body.classList.add('lock');dlgBody.scrollTop=0;toastEl.classList.remove('show');var c=dlg.querySelector('.close');if(c)c.focus({preventScroll:true})}
+
+  /* item dialog */
+  var cur=null;
+  function addRows(ids){return ids.map(function(a){var it=ITEMS[a];return '<div class="arow"><span>'+esc(it.name)+' <span class="ap">+ '+euro(unit(it))+'</span></span><span class="qty"><button type="button" data-ad-dec="'+a+'" aria-label="Minder '+esc(it.name)+'">−</button><span data-adq="'+a+'">0</span><button type="button" data-ad-inc="'+a+'" aria-label="Meer '+esc(it.name)+'">+</button></span></div>'}).join('')}
+  function openItem(id){
+    var it=ITEMS[id];
+    if(plain(it)){addLine({id:id,q:1});toast(it.name+' toegevoegd');return}
+    cur={id:id,ch:{},ad:{},q:1,groups:groupsFor(it)};
+    var h='<h3 id="dlgTitle">'+esc(it.name)+'</h3>'+(it.desc?'<p class="lead">'+esc(it.desc)+'</p>':'')+'<span data-price="'+id+'">'+priceHTML(it)+'</span>';
+    cur.groups.forEach(function(g){
+      h+='<div class="og"><div class="og-h"><span id="gl-'+g.id+'">'+esc(g.label)+'</span><span class="req" data-req="'+g.id+'">Verplicht</span></div><div class="pills" role="radiogroup" aria-labelledby="gl-'+g.id+'">';
+      g.values.forEach(function(v,i){h+='<label class="pill"><input type="radio" name="g-'+g.id+'" value="'+esc(v)+'" data-ch="'+g.id+'"><span>'+esc(v)+'</span></label>'});
+      h+='</div></div>';
+    });
+    h+='<div class="og"><div class="og-h"><span>Maak het compleet</span><span class="opt-l">Optioneel</span></div>';
+    h+='<details class="addg"><summary>Extra saus</summary>'+addRows(SAUCE_IDS)+'</details>';
+    h+='<details class="addg"><summary>Bijgerechten</summary>'+addRows(SIDE_IDS)+'</details>';
+    h+='<details class="addg"><summary>Drinken</summary>'+addRows(DRINK_IDS)+'</details></div>';
+    h+='<label class="note" for="itemNote">Opmerking voor de keuken<textarea id="itemNote" maxlength="140" placeholder="Bijvoorbeeld: zonder uien"></textarea></label>';
+    var f='<span class="qty big"><button type="button" data-iq="-1" aria-label="Minder">−</button><span id="iq">1</span><button type="button" data-iq="1" aria-label="Meer">+</button></span><button class="btn btn-primary" type="button" id="itemAdd" data-item-add></button>';
+    openDlg('item',h,f);updateItem();
   }
+  function updateItem(){
+    if(!cur)return;var it=ITEMS[cur.id],u=unit(it);
+    for(var a in cur.ad)u+=unit(ITEMS[a])*cur.ad[a];
+    document.querySelectorAll('[data-adq]').forEach(function(el){el.textContent=cur.ad[el.getAttribute('data-adq')]||0});
+    var miss=cur.groups.filter(function(g){return !cur.ch[g.id]});
+    cur.groups.forEach(function(g){var r=dlg.querySelector('[data-req="'+g.id+'"]');if(r){var ok=!!cur.ch[g.id];r.classList.toggle('ok',ok);r.textContent=ok?'Gekozen':'Verplicht'}});
+    document.getElementById('iq').textContent=cur.q;
+    var b=document.getElementById('itemAdd');
+    b.disabled=miss.length>0;
+    b.textContent=miss.length?'Kies eerst: '+miss[0].label.toLowerCase():'Toevoegen · '+euro(u*cur.q);
+    dlg.querySelectorAll('[data-price]').forEach(function(el){el.innerHTML=priceHTML(ITEMS[el.getAttribute('data-price')])});
+  }
+  function confirmItem(){
+    var ch={};cur.groups.forEach(function(g){ch[g.id]=cur.ch[g.id]});
+    var ad={};Object.keys(cur.ad).forEach(function(a){if(cur.ad[a]>0)ad[a]=cur.ad[a]});
+    var nt=(document.getElementById('itemNote').value||'').trim();
+    var name=ITEMS[cur.id].name;
+    addLine({id:cur.id,q:cur.q,ch:ch,ad:ad,nt:nt});closeAll();cur=null;toast(name+' toegevoegd');
+  }
+
+  /* upsell */
+  var UPSELL=['Coca-Cola','Fanta','Patat','Knoflooksaus','Rijstpudding','Sigara böreği kaas'].map(byName).filter(Boolean);
+  function renderUpsell(){
+    var h='<h3 id="dlgTitle">Maak je bestelling compleet</h3><p class="lead">Vaak samen besteld bij Portofino.</p><div class="ups">';
+    UPSELL.forEach(function(id){var it=ITEMS[id],n=0;cart.forEach(function(l){if(l.id===id)n+=l.q});
+      h+='<button type="button" data-up="'+id+'"'+(n?' class="on"':'')+'><b>'+esc(it.name)+'</b><span class="pr">'+euro(unit(it))+'</span><span class="ua">'+(n?'✓ '+n+' in je mandje':'+ Toevoegen')+'</span></button>'});
+    dlgBody.innerHTML=h+'</div>';
+  }
+  function openUpsell(){
+    openDlg('upsell','','<button class="btn btn-outline" type="button" data-sheet>Terug</button><button class="btn btn-primary" type="button" data-go-checkout>Verder naar afrekenen</button>');
+    renderUpsell();
+  }
+
+  /* checkout */
+  var tip=0;
+  function slots(){
+    var n=nowAms(),t=H[n.d],out=[],s=Math.max(t[0],n.m+30);s=Math.ceil(s/15)*15;
+    for(var m=s;m<=t[1]-10;m+=15)out.push(fmt(m));
+    return out;
+  }
+  function openCheckout(){
+    var sl=slots(),opts='<option>Zo snel mogelijk</option>'+sl.map(function(x){return '<option>'+x+'</option>'}).join('');
+    var h='<h3 id="dlgTitle">Afrekenen</h3>'+
+      '<div class="cmode" role="group" aria-label="Bezorgen of afhalen"><button type="button" data-mode="bezorgen">Bezorgen<small>10% korting</small></button><button type="button" data-mode="afhalen">Afhalen<small>15% korting</small></button></div>'+
+      '<form id="coForm" class="co" novalidate>'+
+      '<fieldset id="coAddr"><legend>Bezorgadres</legend>'+
+        '<label for="co-straat">Straat en huisnummer *<input id="co-straat" name="straat" autocomplete="street-address"></label>'+
+        '<div class="row"><label for="co-pc">Postcode *<input id="co-pc" name="postcode" autocomplete="postal-code" placeholder="1947 DC" pattern="[1-9][0-9]{3} ?[A-Za-z]{2}"></label>'+
+        '<label for="co-plaats">Plaats *<input id="co-plaats" name="plaats" autocomplete="address-level2" placeholder="Beverwijk"></label></div>'+
+      '</fieldset>'+
+      '<fieldset><legend>Jouw gegevens</legend>'+
+        '<label for="co-naam">Naam *<input id="co-naam" name="naam" required autocomplete="name"></label>'+
+        '<div class="row"><label for="co-tel">Telefoon *<input id="co-tel" name="tel" type="tel" required autocomplete="tel"></label>'+
+        '<label for="co-mail">E-mail *<input id="co-mail" name="email" type="email" required autocomplete="email"></label></div>'+
+      '</fieldset>'+
+      '<fieldset><legend id="coTimeL">Bezorgtijd</legend><label for="co-tijd" class="sr">Tijd</label><select id="co-tijd" name="tijd">'+opts+'</select>'+(sl.length?'':'<p class="hint">Vandaag zijn er geen tijdsloten meer. In de echte website kies je dan een andere dag.</p>')+'</fieldset>'+
+      '<fieldset><legend>Opmerking</legend><label for="co-opm" class="sr">Opmerking</label><textarea id="co-opm" name="opmerking" maxlength="200" placeholder="Bijvoorbeeld: bel aan bij de achterdeur"></textarea></fieldset>'+
+      '<fieldset id="coTip"><legend>Fooi voor de bezorger</legend><div class="tips" role="group" aria-label="Fooi"><button type="button" data-tip="0">Geen</button><button type="button" data-tip="100">€ 1</button><button type="button" data-tip="200">€ 2</button><button type="button" data-tip="300">€ 3</button></div></fieldset>'+
+      '<div id="coSum"></div>'+
+      '<p class="hint">Conceptversie: er wordt niets verstuurd en er wordt niets betaald.</p>'+
+      '</form>';
+    var f='<button class="btn btn-outline" type="button" data-sheet>Terug</button><button class="btn btn-primary" type="submit" form="coForm" id="coBtn"></button>';
+    openDlg('checkout',h,f);updateCheckout();
+    document.getElementById('coForm').addEventListener('submit',function(ev){
+      ev.preventDefault();var fm=ev.target;
+      if(!canOrder(totals())){toast('Het minimum voor bezorgen is € 12');return}
+      if(!fm.checkValidity()){fm.reportValidity();return}
+      openDone();
+    });
+  }
+  function updateCheckout(){
+    var bez=mode==='bezorgen',t=totals(),tp=bez?tip:0;
+    dlg.querySelectorAll('.cmode [data-mode]').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-mode')===mode?'true':'false')});
+    var a=document.getElementById('coAddr');if(!a)return;
+    a.hidden=!bez;['co-straat','co-pc','co-plaats'].forEach(function(id){document.getElementById(id).required=bez});
+    document.getElementById('coTip').hidden=!bez;
+    document.getElementById('coTimeL').textContent=bez?'Bezorgtijd':'Afhaaltijd';
+    dlg.querySelectorAll('[data-tip]').forEach(function(b){b.setAttribute('aria-pressed',+b.getAttribute('data-tip')===tip?'true':'false')});
+    document.getElementById('coSum').innerHTML=sumsHTML(t,tp)+(bez&&t.tot<MIN?'<p class="hint warn">Nog '+euro(MIN-t.tot)+' tot het minimum van € 12 voor bezorgen.</p>':'');
+    var b=document.getElementById('coBtn');b.textContent='Bestelling plaatsen · '+euro(t.tot+tp);b.disabled=!canOrder(t);
+  }
+  function openDone(){
+    var h='<h3 id="dlgTitle">Bedankt! (concept)</h3><p class="lead">Dit is een conceptontwerp. Je bestelling is niet verstuurd en er is niets betaald.</p><p class="lead">Op de echte website gaat je bestelling nu naar de keuken en krijg je een bevestiging.</p><div class="sumbox">'+sumsHTML(totals(),mode==='bezorgen'?tip:0)+'</div>';
+    openDlg('done',h,'<button class="btn btn-outline" type="button" data-close>Terug naar de site</button><a class="btn btn-primary" href="https://www.portofino-bestellen.nl/online-ordering" target="_blank" rel="noopener">Echt bestellen</a>');
+  }
+
   scrim.addEventListener('click',closeAll);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll()});
   document.getElementById('mbarBtn').addEventListener('click',function(){
     if(totals().n)openSheet();else{if(!biz.hidden)location.hash='menu';else document.getElementById('menu').scrollIntoView()}
   });
 
+  document.addEventListener('change',function(e){
+    var el=e.target;if(el.matches&&el.matches('[data-ch]')&&cur){cur.ch[el.getAttribute('data-ch')]=el.value;updateItem()}
+  });
   document.addEventListener('click',function(e){
-    var el;
-    if((el=e.target.closest('[data-inc]'))){cart[el.getAttribute('data-inc')]++;renderCart();return}
-    if((el=e.target.closest('[data-dec]'))){var id=el.getAttribute('data-dec');cart[id]--;if(cart[id]<=0)delete cart[id];renderCart();return}
-    if((el=e.target.closest('[data-mode]'))){setMode(el.getAttribute('data-mode'));return}
-    if(e.target.closest('[data-clear]')){cart={};renderCart();return}
-    if(e.target.closest('[data-checkout]')){openCheckout();return}
-    if(e.target.closest('[data-close]')){closeAll();return}
-    if((el=e.target.closest('[data-cat]'))){var s=document.getElementById('cat-'+el.getAttribute('data-cat'));if(s)s.scrollIntoView({block:'start'});return}
-    if((el=e.target.closest('[data-add]'))){add(el.getAttribute('data-add'));return}
+    var el,t=e.target;
+    if((el=t.closest('[data-ad-inc]'))){var a=el.getAttribute('data-ad-inc');cur.ad[a]=(cur.ad[a]||0)+1;updateItem();return}
+    if((el=t.closest('[data-ad-dec]'))){var a2=el.getAttribute('data-ad-dec');cur.ad[a2]=Math.max(0,(cur.ad[a2]||0)-1);updateItem();return}
+    if((el=t.closest('[data-iq]'))){cur.q=Math.max(1,cur.q+(+el.getAttribute('data-iq')));updateItem();return}
+    if(t.closest('[data-item-add]')){confirmItem();return}
+    if((el=t.closest('[data-inc]'))){cart[+el.getAttribute('data-inc')].q++;renderCart();return}
+    if((el=t.closest('[data-dec]'))){var i=+el.getAttribute('data-dec');cart[i].q--;if(cart[i].q<=0)cart.splice(i,1);renderCart();return}
+    if((el=t.closest('[data-mode]'))){setMode(el.getAttribute('data-mode'));return}
+    if((el=t.closest('[data-tip]'))){tip=+el.getAttribute('data-tip');updateCheckout();return}
+    if((el=t.closest('[data-up]'))){var u=el.getAttribute('data-up');addLine({id:u,q:1});return}
+    if(t.closest('[data-go-checkout]')){openCheckout();return}
+    if(t.closest('[data-sheet]')){if(window.innerWidth<960)openSheet();else closeAll();return}
+    if(t.closest('[data-clear]')){cart=[];renderCart();return}
+    if(t.closest('[data-checkout]')){openUpsell();return}
+    if(t.closest('[data-close]')){closeAll();return}
+    if((el=t.closest('[data-cat]'))){var s=document.getElementById('cat-'+el.getAttribute('data-cat'));if(s)s.scrollIntoView({block:'start'});return}
+    if((el=t.closest('[data-add]'))){openItem(el.getAttribute('data-add'));return}
   });
 
   /* ---------- opening hours + status ---------- */
