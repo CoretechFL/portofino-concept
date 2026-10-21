@@ -153,7 +153,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .tag{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--tag-bg);color:var(--tag-fg);margin-bottom:5px}
 .tag.hot{background:var(--soft);color:var(--brand)}
 .thumb{position:relative;width:92px;height:76px;border-radius:12px;background:linear-gradient(135deg,var(--soft),var(--soft-2));display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.7rem;color:var(--brand)}
-.thumb .add{position:absolute;right:6px;bottom:6px}
+.thumb{overflow:hidden}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb .add{position:absolute;right:6px;bottom:6px;z-index:1}
+@media(min-width:560px){.thumb{width:120px;height:96px}}
 .item:hover h3{color:var(--brand)}
 
 /* prices + add */
@@ -1010,7 +1013,8 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
       ["Uiensaus","",1],["BBQ-saus","",1],["Franse Mosterd","",1],["Pesto","",1],["Satésaus","",2],
       ["Uiensalade","",4],["Cacik","",4],["Parmezaanse Kaas","",1],["Extra Pitta","",1.5],["Half Turks Brood","",0]]}
   ];
-  var FEATURED=[['pizza','Pizza Vegetarisch','V'],['pizza','Pizza Prosciutto','P'],['pizza','Pizza Margherita','M'],['pizza','Pizza Pepperoni','P'],['pasta','Pasta Frutti di Mare','F'],['pasta','Pasta Bolognese','B'],['grill','Spareribs Schotel','S'],['grill','Schotel Lamsshoarma','S']];
+  var FEATURED=[['pizza','Pizza Vegetarisch','V','11062b_fd9a9e3963014f3da221cf8c19ae9c2d~mv2.jpg'],['pizza','Pizza Prosciutto','P','5ba1ee589b8c43759c6811ad6b2a099c.jpg'],['pizza','Pizza Margherita','M','11062b_5ccdda17595a4f67ab8e355cb5292836~mv2.jpg'],['pizza','Pizza Pepperoni','P','c837a6_494b10cbb18941019c085eb4ea7c1e30~mv2.jpg'],['pasta','Pasta Frutti di Mare','F','4a01d0_6dcc84764e5647bc8be09002dae96408~mv2.png'],['pasta','Pasta Bolognese','B','4a01d0_44c2d117c09b46caa7350ced8672c737~mv2.png'],['grill','Spareribs Schotel','S','4a01d0_87056de882504e01a97976bb832dbe20~mv2.png'],['grill','Schotel Lamsshoarma','S','4a01d0_494035af44174d2d86d02495fa5d4e17~mv2.jpeg']];
+  function photo(f){return 'https://static.wixstatic.com/media/'+f+'/v1/fill/w_320,h_260,al_c,q_80/'+f}
 
   var RATE={bezorgen:0.9,afhalen:0.85};
   var ITEMS={},ORDER=[];
@@ -1072,7 +1076,7 @@ footer .disc{margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,
   /* ---------- render featured + menu ---------- */
   var feat=document.getElementById('featured'),fh='';
   FEATURED.forEach(function(f){var id=byName(f[1]);if(!id)return;var it=ITEMS[id];
-    fh+='<div class="item" data-add="'+id+'"><div>'+(it.tag?tagHTML(it.tag)+'<br>':'')+'<h3><span class="qb" data-qb="'+id+'" hidden></span>'+esc(it.name)+'</h3><p>'+esc(it.desc)+'</p><span data-price="'+id+'">'+priceHTML(it)+'</span></div><div class="thumb" aria-hidden="true">'+f[2]+'<button class="add" type="button" tabindex="-1">+</button></div></div>';
+    fh+='<div class="item" data-add="'+id+'"><div>'+(it.tag?tagHTML(it.tag)+'<br>':'')+'<h3><span class="qb" data-qb="'+id+'" hidden></span>'+esc(it.name)+'</h3><p>'+esc(it.desc)+'</p><span data-price="'+id+'">'+priceHTML(it)+'</span></div><div class="thumb" aria-hidden="true">'+f[2]+(f[3]?'<img src="'+photo(f[3])+'" alt="" loading="lazy" onerror="this.remove()">':'')+'<button class="add" type="button" tabindex="-1">+</button></div></div>';
   });
   feat.innerHTML=fh;
 
